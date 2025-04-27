@@ -4,40 +4,28 @@
       <h1 class="text-3xl font-bold text-blue-800 mb-2">HydroHorizon</h1>
       <p class="text-gray-600">Groundwater Monitoring & Insights Platform</p>
     </header>
-    
+
     <div class="mb-6">
       <label for="country-select" class="block text-sm font-medium text-gray-700 mb-2">Select a Country:</label>
-      <select 
-        id="country-select"
-        v-model="selectedCountry"
+      <select id="country-select" v-model="selectedCountry"
         class="block w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-        @change="loadCountryData"
-      >
+        @change="loadCountryData">
         <option value="">-- Select a Country --</option>
         <!-- Removed Ghana from options -->
         <option value="kenya">Kenya</option>
         <option value="india">India</option>
       </select>
     </div>
-    
+
     <div v-if="selectedCountry" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div class="lg:col-span-2">
-        <GroundwaterMap 
-          :country="selectedCountry" 
-          :data="currentData"
-          :loading="loading"
-        />
+        <GroundwaterMap :country="selectedCountry" :data="currentData" :loading="loading" />
       </div>
       <div>
-        <GroundwaterInsights 
-          :country="selectedCountry" 
-          :data="currentData"
-          :trend="trend"
-          :loading="loading"
-        />
+        <GroundwaterInsights :country="selectedCountry" :data="currentData" :trend="trend" :loading="loading" />
       </div>
     </div>
-    
+
     <div v-else class="bg-white rounded-lg shadow-md p-8 text-center">
       <!-- Removed the image that was causing the error -->
       <h2 class="text-2xl font-bold text-gray-800 mb-2">Welcome to HydroHorizon</h2>
@@ -53,12 +41,19 @@
         </div>
       </div>
     </div>
-    
+
     <footer class="mt-12 text-center text-gray-500 text-sm">
-      <p>Data source: <a href="https://podaac.jpl.nasa.gov/dataset/TELLUS_GRAC_L3_JPL_RL06_LND_v04#" target="_blank">NASA GRACE</a> and <a href="https://podaac.jpl.nasa.gov/dataset/TELLUS_GRFO_L3_JPL_RL06.3_LND_v04" target="_blank">GRACE-FO</a> Missions data</p>
-      <p class="mt-1">© 2025 Visual Wizards | Developed for the Hackathon for the People's Data organized by <a href="https://www.equitechfutures.com/" target="_blank">Equitech Futures</a></p>
+      <p>Data source: <a class="text-blue-500 hover:underline"
+          href="https://podaac.jpl.nasa.gov/dataset/TELLUS_GRAC_L3_JPL_RL06_LND_v04#" target="_blank">NASA GRACE</a> and
+        <a class="text-blue-500 hover:underline"
+          href="https://podaac.jpl.nasa.gov/dataset/TELLUS_GRFO_L3_JPL_RL06.3_LND_v04" target="_blank">GRACE-FO</a>
+        Missions data</p>
+      <p class="mt-1">© 2025 Visual Wizards | Developed for the Hackathon for the People's Data organized by <a
+          class="text-blue-500 hover:underline" href="https://www.equitechfutures.com/" target="_blank">Equitech
+          Futures</a></p>
       <p class="mt-1">Rishi | Laura | Diksha | Philip</p>
-      <p class="mt-1">Find code on <a href="https://github.com/Phinart98/HydroHorizon" target="_blank">Github here</a></p>
+      <p class="mt-1">Find code on <a class="text-blue-500 hover:underline"
+          href="https://github.com/Phinart98/HydroHorizon" target="_blank">Github here</a></p>
     </footer>
   </div>
 </template>
@@ -76,10 +71,10 @@ const trend = ref('stable');
 // Load data for a specific country
 const loadCountryData = async () => {
   if (!selectedCountry.value) return;
-  
+
   loading.value = true;
   currentData.value = null;
-  
+
   try {
     // Check if we already have data for this country
     if (!countryData.value[selectedCountry.value]) {
@@ -91,14 +86,14 @@ const loadCountryData = async () => {
       const data = await response.json();
       countryData.value[selectedCountry.value] = data;
     }
-    
+
     // Get the most recent data point
     const countryDataArray = countryData.value[selectedCountry.value];
     if (countryDataArray && countryDataArray.length > 0) {
       // Sort by date (newest first)
       countryDataArray.sort((a, b) => new Date(b.date) - new Date(a.date));
       currentData.value = countryDataArray[0];
-      
+
       // Calculate trend based on last 12 months of data
       calculateTrend(countryDataArray);
     }
@@ -115,29 +110,29 @@ const calculateTrend = (data) => {
     trend.value = 'stable';
     return;
   }
-  
+
   // Get up to 12 most recent months
   const recentData = data.slice(0, Math.min(12, data.length));
-  
+
   // Simple linear regression to determine trend
   const n = recentData.length;
   let sumX = 0;
   let sumY = 0;
   let sumXY = 0;
   let sumXX = 0;
-  
+
   for (let i = 0; i < n; i++) {
     const x = i; // Time index
     const y = recentData[n - 1 - i].mean; // Mean value (most recent first)
-    
+
     sumX += x;
     sumY += y;
     sumXY += x * y;
     sumXX += x * x;
   }
-  
+
   const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
-  
+
   // Classify trend based on slope
   if (slope > 0.001) {
     trend.value = 'increasing';

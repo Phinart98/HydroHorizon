@@ -36,20 +36,7 @@ The application:
   - Dataset ID: `TELLUS_GRFO_L3_JPL_RL06.3_LND_v04`
 - Provider: NASA JPL / PO.DAAC
 
-### 2. Data Download
-The application uses NASA's PO.DAAC data downloader to fetch the satellite data:
-
-```bash
-podaac-data-downloader -c TELLUS_GRAC_L3_JPL_RL06_LND_v04 -d ./data/grace -sd 2002-04-04T00:00:00Z -ed 2017-10-18T00:00:00Z -e .nc
-podaac-data-downloader -c TELLUS_GRFO_L3_JPL_RL06.3_LND_v04 -d ./data/grace-fo -sd 2018-05-22T00:00:00Z -e .nc
-```
-
-### 3. Data Processing
-The application processes the NetCDF files to extract groundwater anomalies for specific countries:
-
-```bash
-python process_grace_data.py
-```
+---
 
 This script:
 - Opens each NetCDF file
@@ -62,7 +49,7 @@ This script:
 
 ### Prerequisites
 
-- Node.js (v16 or later)
+- Node.js (v18 or later)
 - Python 3.8 or later
 - NASA Earthdata Login account (register at https://urs.earthdata.nasa.gov/)
 
@@ -90,8 +77,6 @@ This script:
        login your_username
        password your_password
    ```
-   
-   On Windows, this file should be named `_netrc`.
 
 ### Data Download and Processing
 
@@ -106,6 +91,7 @@ This script:
    ```
 
 This will create processed JSON files in the `public/data` directory.
+You can choose to isolate the Python files outside the project to act as a "mini backend"
 
 ### Development
 
@@ -135,7 +121,7 @@ npm run preview
 
 ### Groundwater Anomalies
 
-The data shown in HydroHorizon represents **groundwater storage anomalies**, which are deviations from the long-term average. These are measured in centimeters of equivalent water thickness:
+The data shown in HydroHorizon represents **groundwater storage anomalies**, which are deviations from the long-term average. These are measured in meters of equivalent water thickness. We convert to centimeters:
 
 - **Positive values (blue/green)**: More groundwater than average
 - **Near-zero values (yellow)**: Normal groundwater levels
@@ -168,20 +154,9 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## Acknowledgments
 
 - NASA JPL and PO.DAAC for providing the GRACE and GRACE-FO data
 - The Hackathon for the People's Data 2025 for the opportunity to develop this application
-- All contributors and team members who made this project possible
+- All contributors and team members who made this project possible (Laura, Rishi, Diksha)
 
-## Contact
-
-For questions or feedback, please open an issue on this repository or contact the maintainers directly.
-
----
-
-*HydroHorizon: Making groundwater data accessible for everyone.*
