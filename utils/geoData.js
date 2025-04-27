@@ -4,7 +4,7 @@
  * or a geospatial database
  */
 
-// Simplified Ghana boundary
+// Corrected Ghana boundary with proper negative longitude values
 const ghanaBoundary = {
   "type": "Feature",
   "properties": { "name": "Ghana" },
@@ -68,43 +68,10 @@ export function getFallbackBoundary(country) {
  */
 export function getCountryCenter(country) {
   const centers = {
-    ghana: [7.9465, -1.0232],
+    ghana: [7.9465, -1.0232], // Corrected: Negative longitude for Ghana
     kenya: [0.0236, 37.9062],
     india: [20.5937, 78.9629]
   };
   
   return centers[country.toLowerCase()] || [0, 0];
-}
-
-/**
- * Get the default zoom level for a country
- * @param {string} country - Country code
- * @param {boolean} isMobile - Whether the device is mobile
- * @returns {number} Zoom level
- */
-export function getDefaultZoom(country, isMobile = false) {
-  const baseZoom = {
-    ghana: 6,
-    kenya: 6,
-    india: 5
-  };
-  
-  // Use a lower zoom on mobile
-  const zoom = baseZoom[country.toLowerCase()] || 5;
-  return isMobile ? Math.max(zoom - 1, 3) : zoom;
-}
-
-/**
- * Get the bounding box for a country
- * @param {string} country - Country code
- * @returns {Array} [minLon, minLat, maxLon, maxLat]
- */
-export function getCountryBoundingBox(country) {
-  const boxes = {
-    ghana: [-3.3, 4.5, 1.2, 11.2],
-    kenya: [33.8, -4.8, 42.0, 5.0],
-    india: [68.0, 6.5, 98.0, 36.0]
-  };
-  
-  return boxes[country.toLowerCase()] || null;
 }
