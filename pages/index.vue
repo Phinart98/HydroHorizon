@@ -58,6 +58,7 @@
       <p>Data source: <a href="https://podaac.jpl.nasa.gov/dataset/TELLUS_GRAC_L3_JPL_RL06_LND_v04#" target="_blank">NASA GRACE</a> and <a href="https://podaac.jpl.nasa.gov/dataset/TELLUS_GRFO_L3_JPL_RL06.3_LND_v04" target="_blank">GRACE-FO</a> Missions data</p>
       <p class="mt-1">© 2025 Visual Wizards | Developed for the Hackathon for the People's Data organized by <a href="https://www.equitechfutures.com/" target="_blank">Equitech Futures</a></p>
       <p class="mt-1">Rishi | Laura | Diksha | Philip</p>
+      <p class="mt-1">Find code on <a href="https://github.com/Phinart98/HydroHorizon" target="_blank">Github here</a></p>
     </footer>
   </div>
 </template>
